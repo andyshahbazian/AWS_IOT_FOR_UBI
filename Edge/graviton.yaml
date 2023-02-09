@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+    Concept: "AB3"
+Description: "Andy AB3 ARM based Edge setup"
+Resources:
+    EC2Instance:
+        Type: "AWS::EC2::Instance"
+        Properties:
+            ImageId: "ami-00874d747dde814fa"
+            InstanceType: "t3.small"
+            KeyName: "Andys_KP"
+            AvailabilityZone: !Sub "${AWS::Region}b"
+            Tenancy: "default"
+            SubnetId: "subnet-0d7b0b8cea115d6c0"
+            EbsOptimized: true
+            SecurityGroupIds: 
+              - "sg-0540dc5b41486b98a"
+            SourceDestCheck: true
+            BlockDeviceMappings: 
+              - 
+                DeviceName: "/dev/sda1"
+                Ebs: 
+                    Encrypted: false
+                    VolumeSize: 30
+                    SnapshotId: "snap-052b2dbe152b76fef"
+                    VolumeType: "gp2"
+                    DeleteOnTermination: true
+            UserData: "CiAgICAgICAgICAjIFVwZ3JhZGUgc3lzdGVtIGFuZCByZWJvb3QgaWYgcmVxdWlyZWQKICAgICAgICAgIGFwdCB1cGRhdGUgJiYgYXB0IHVwZ3JhZGUgLXkKICAgICAgICAgIGlmIFsgLWYgL3Zhci9ydW4vcmVib290LXJlcXVpcmVkIF07IHRoZW4KICAgICAgICAgICAgIyBEZWxldGUgdGhlIFVzZXJEYXRhIGluZm8gZmlsZSBzbyB0aGF0IHdlIHJ1biBhZ2FpbiBhZnRlciByZWJvb3QKICAgICAgICAgICAgcm0gLWYgL3Zhci9saWIvY2xvdWQvaW5zdGFuY2VzLyovc2VtL2NvbmZpZ19zY3JpcHRzX3VzZXIKICAgICAgICAgICAgcmVib290CiAgICAgICAgICAgIGV4aXQKICAgICAgICAgIGZpCgogICAgICAgICAgIyBJbnN0YWxsIGhlbHBlciBzY3JpcHRzOgogICAgICAgICAgYXB0IHVwZGF0ZSAmJiBhcHQgaW5zdGFsbCAteSBweXRob24zLXNldHVwdG9vbHMKICAgICAgICAgIG1rZGlyIC1wIC9vcHQvYXdzL2JpbgogICAgICAgICAgd2dldCBodHRwczovL3MzLmFtYXpvbmF3cy5jb20vY2xvdWRmb3JtYXRpb24tZXhhbXBsZXMvYXdzLWNmbi1ib290c3RyYXAtcHkzLWxhdGVzdC50YXIuZ3oKICAgICAgICAgIHB5dGhvbjMgLW0gZWFzeV9pbnN0YWxsIC0tc2NyaXB0LWRpciAvb3B0L2F3cy9iaW4gYXdzLWNmbi1ib290c3RyYXAtcHkzLWxhdGVzdC50YXIuZ3oKICAgICAgICAgIHJtIGF3cy1jZm4tYm9vdHN0cmFwLXB5My1sYXRlc3QudGFyLmd6CgogICAgICAgICAgIyBPbiBlcnJvciwgc2lnbmFsIGJhY2sgdG8gY2ZuOgogICAgICAgICAgZXJyb3JfaGFuZGxlcigpIHsKICAgICAgICAgICAgL29wdC9hd3MvYmluL2Nmbi1zaWduYWwgLS1zdWNjZXNzIGZhbHNlIC0tc3RhY2sgJHtBV1M6OlN0YWNrTmFtZX0gLS1yZXNvdXJjZSBFYzJJbnN0YW5jZSAtLXJlZ2lvbiAke0FXUzo6UmVnaW9ufQogICAgICAgICAgfQogICAgICAgICAgdHJhcCBlcnJvcl9oYW5kbGVyIEVSUgoKICAgICAgICAgICMgSW5zdGFsbCBwYWNrYWdlcwogICAgICAgICAgYXB0IHVwZGF0ZSAmJiBhcHQgaW5zdGFsbCAteSBlYzItaW5zdGFuY2UtY29ubmVjdCBodG9wIGpxIHVuemlwIHppcAoKICAgICAgICAgICMgSW5zdGFsbCBBV1MgQ0xJOgogICAgICAgICAgY3VybCAiaHR0cHM6Ly9hd3NjbGkuYW1hem9uYXdzLmNvbS9hd3NjbGktZXhlLWxpbnV4LWFhcmNoNjQuemlwIiAtbyAiYXdzY2xpdjIuemlwIgogICAgICAgICAgdW56aXAgYXdzY2xpdjIuemlwCiAgICAgICAgICAuL2F3cy9pbnN0YWxsCiAgICAgICAgICBybSBhd3NjbGl2Mi56aXAK"
+            Tags: 
+              - 
+                Key: "Name"
+                Value: "Graviton"
+            HibernationOptions: 
+                Configured: false
+            CpuOptions: 
+                CoreCount: 1
+                ThreadsPerCore: 2
+            EnclaveOptions: 
+                Enabled: false
