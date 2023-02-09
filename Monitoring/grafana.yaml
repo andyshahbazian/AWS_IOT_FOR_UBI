@@ -1,1 +1,67 @@
 
+# follwing this workshop https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-grafana-workspace.html
+Description: Amazon Grafana workspace stack
+Resources:
+  AmazonGrafanaWorkspaceIAMRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonGrafanaAthenaAccess'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - grafana.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+
+  AmazonGrafanaWorkspace:
+    Type: 'AWS::Grafana::Workspace'
+    Properties:
+      AccountAccessType: CURRENT_ACCOUNT
+      Name: AmazonGrafanaWorkspace
+      Description: Amazon Grafana Workspace
+      AuthenticationProviders:
+        - SAML
+      PermissionType: CUSTOMER_MANAGED
+      RoleArn: !GetAtt 
+        - AmazonGrafanaWorkspaceIAMRole
+        - Arn
+      SamlConfiguration:
+        IdpMetadata:
+          Xml: >-
+            <md:EntityDescriptor xmlns:md='urn:oasis:names:tc:SAML:2.0:metadata'
+            entityID='entityId'>DATA</md:EntityDescriptor>
+        AssertionAttributes:
+          Name: displayName
+          Login: login
+          Email: email
+          Groups: group
+          Role: role
+          Org: org
+        RoleValues:
+          Editor:
+            - editor1
+          Admin:
+            - admin1
+        AllowedOrganizations:
+          - org1
+        LoginValidityDuration: 60
+
+Outputs:
+  WorkspaceEndpoint:
+    Value: !GetAtt 
+      - AmazonGrafanaWorkspace
+      - Endpoint
+  WorkspaceStatus:
+    Value: !GetAtt 
+      - AmazonGrafanaWorkspace
+      - Status
+  WorkspaceId:
+    Value: !Ref AmazonGrafanaWorkspace
+  GrafanaVersion:
+    Value: !GetAtt 
+      - AmazonGrafanaWorkspace
+      - GrafanaVersion
